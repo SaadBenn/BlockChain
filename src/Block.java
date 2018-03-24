@@ -18,17 +18,14 @@ public class Block {
     }
 
     public String calculateHash() {
-        String calculatedHash = StringUtil.applySha256(prevHash + Long.toString(timeStamp) + data); // apply hash
+        String calculatedHash = StringUtil.applySha256(prevHash + Long.toString(timeStamp) + Integer.toString(nonce) + data); // apply hash
         return calculatedHash;
     }
 
     public void mineBlock(int difficulty) {
         String target = new String(new char[difficulty]).replace('\0', '0'); // Create a string with difficulty * "0"
 
-        while(true) {
-            if (!!hash.substring(0, difficulty).equals(target)) {
-                break;
-            }
+        while(!hash.substring( 0, difficulty).equals(target)) {
             nonce ++;
             hash = calculateHash();
         }
