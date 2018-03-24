@@ -1,9 +1,10 @@
 import java.util.ArrayList;
+//import com.google.gson.GSonbuilder;
 
 public class Blockchain {
 
     public static ArrayList<Block> blockchain = new ArrayList<Block>();
-    public static int difficulty = 5;
+    public static int difficulty = 2;
 
     public static void main(String[] args) {
 
@@ -22,10 +23,9 @@ public class Blockchain {
 
         System.out.println("\nBlockchain is Valid: " + isChainValid());
 
-        // String blockchainJson = new GsonBuilder().setPrettyPrinting().create().toJson(blockchain);
-        //
-        // System.out.println("\nThe block chain: ");
-        //System.out.println(blockchainJson);
+//        String blockchainJson = new GsonBuilder().setPrettyPrinting().create().toJson(blockchain);
+//        System.out.println("\nThe block chain: ");
+//        System.out.println(blockchainJson);
     }
 
     public static boolean isChainValid() {
