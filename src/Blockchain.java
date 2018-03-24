@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-//import com.google.gson.GSonbuilder;
+import com.google.gson.GsonBuilder;
 
 public class Blockchain {
 
@@ -23,9 +23,9 @@ public class Blockchain {
 
         System.out.println("\nBlockchain is Valid: " + isChainValid());
 
-//        String blockchainJson = new GsonBuilder().setPrettyPrinting().create().toJson(blockchain);
-//        System.out.println("\nThe block chain: ");
-//        System.out.println(blockchainJson);
+        String chainInJSON = new GsonBuilder().setPrettyPrinting().create().toJson(blockchain);
+        System.out.println("\nThe block chain: ");
+        System.out.println(chainInJSON);
     }
 
     public static boolean isChainValid() {
