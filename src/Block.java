@@ -1,6 +1,11 @@
-import java.util.Date;
+import java.util.*;
 
 public class Block {
+
+    public String merkleRoot;
+
+    //our data will be a simple message.
+    public ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
     public String hash;
     public String prevHash;
@@ -13,8 +18,7 @@ public class Block {
     private int nonce;
 
     //Block Constructor.
-    public Block(String data, String prevHash ) {
-        this.data = data;
+    public Block(String prevHash ) {
         this.prevHash = prevHash;
         this.timeStamp = new Date().getTime();
 
@@ -23,19 +27,40 @@ public class Block {
     }
 
     public String calculateHash() {
-        String calculatedHash = StringUtil.applySha256(prevHash + Long.toString(timeStamp) + Integer.toString(nonce) + data); // apply hash
+        String calculatedHash = StringUtil.applySha256(prevHash + Long.toString(timeStamp) + Integer.toString(nonce) + merkleRoot); // apply hash
         return calculatedHash;
     }
 
+    //Increases nonce value until hash target is reached.
     public void mineBlock(int difficulty) {
+        merkleRoot = StringUtil.getMerkleRoot(transactions);
 
-        // Create a string with difficulty * "0"
-        String target = new String(new char[difficulty]).replace('\0', '0');
+        //Create a string with difficulty * "0"
+        String target = StringUtil.getDifficultyString(difficulty);
 
-        while(!hash.substring( 0, difficulty).equals(target)) {
+        while (!hash.substring( 0, difficulty).equals(target)) {
             nonce ++;
             hash = calculateHash();
         }
         System.out.println("Block Mined!!! : " + hash);
+    }
+
+    //Add transactions to this block
+    public boolean addTransaction(Transaction transaction) {
+
+        //process transaction and check if valid, unless block is genesis block then ignore.
+        if (transaction == null) {
+            return false;
+        }
+
+        if ((prevHash != "0")) {
+            if(!(transaction.processTransaction())) {
+                System.out.println("Transaction failed to process. Discarded.");
+                return false;
+            }
+        }
+        transactions.add(transaction);
+        System.out.println("Transaction Successfully added to Block");
+        return true;
     }
 }
